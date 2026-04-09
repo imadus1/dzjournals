@@ -1,24 +1,46 @@
-<div class="search-app-container">
-  <iframe 
-    src="https://script.google.com/macros/s/AKfycbzPZkT6t6quvZn0NrcoVShAfSjPMD4nkm_QllI_gBSo-dvFrJ66hGBr27KKVp7K-gHmqQ/exec" 
-    width="100%" 
-    height="900px" 
-    frameborder="0" 
-    marginheight="0" 
-    marginwidth="0"
-    title="Scientific Journal Master Index">
-    Loading Search Engine...
-  </iframe>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scientific Journal Master Index</title>
+    
+    <style>
+        /* Removes default browser margins so the app sits flush */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f9fafb; /* Matches your app's bg-gray-50 */
+            overflow: hidden; /* Prevents double scrollbars */
+        }
 
-<style>
-  /* Optional: Ensures the iframe wrapper is responsive on mobile */
-  .search-app-container {
-    width: 100%;
-    max-width: 1200px; /* Adjust to match your website's layout */
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 8px; /* Gives the iframe a nice modern rounded edge */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Optional shadow */
-  }
-</style>
+        /* Makes the iframe responsive on both desktop and mobile */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 1200px; /* Keeps it from getting too wide on huge monitors */
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <iframe 
+            src="https://script.google.com/macros/s/AKfycbzPZkT6t6quvZn0NrcoVShAfSjPMD4nkm_QllI_gBSo-dvFrJ66hGBr27KKVp7K-gHmqQ/exec" 
+            title="Scientific Journal Search Engine"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+</body>
+</html>
