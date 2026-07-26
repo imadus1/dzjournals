@@ -19,25 +19,25 @@
     </div>
 
     <script>
-        const SUPABASE_URL = "https://afollbwkvfzhnvpbbnss.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2xsYndrdmZ6aG52cGJibnNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NDgyMzgsImV4cCI6MjEwMDMyNDIzOH0.FVuliZh-KITh7yN8Q42rUEhwb_El4t9XgOGclVNRCaQ";
+        // RENAMED VARIABLES so they don't collide with your injected HTML
+        const LOADER_URL = "https://afollbwkvfzhnvpbbnss.supabase.co";
+        const LOADER_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2xsYndrdmZ6aG52cGJibnNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NDgyMzgsImV4cCI6MjEwMDMyNDIzOH0.FVuliZh-KITh7yN8Q42rUEhwb_El4t9XgOGclVNRCaQ";
         const COMPONENT_NAME = "main_app";
 
         async function loadHiddenApp() {
-            const url = `${SUPABASE_URL}/rest/v1/hidden_dz?component_name=eq.${COMPONENT_NAME}&select=html_string`;
+            const url = `${LOADER_URL}/rest/v1/hidden_dz?component_name=eq.${COMPONENT_NAME}&select=html_string`;
 
             try {
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        'apikey': LOADER_KEY,
+                        'Authorization': `Bearer ${LOADER_KEY}`
                     }
                 });
 
                 if (!response.ok) {
-                    // This will catch Supabase-specific errors (like wrong column names)
                     const errorText = await response.text();
                     throw new Error(`Supabase Error ${response.status}: ${errorText}`);
                 }
@@ -50,7 +50,7 @@
                     document.write(secretHTML);
                     document.close();
                 } else {
-                    throw new Error("Connected successfully, but no row was found where component_name = 'main_app'. Check your spelling in the database!");
+                    throw new Error("Connected successfully, but no row was found. Check spelling!");
                 }
 
             } catch (error) {
