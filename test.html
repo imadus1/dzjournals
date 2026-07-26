@@ -5,30 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
     <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f9fafb;
-            font-family: sans-serif;
-            color: #374151;
-        }
-        .loader {
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .text-center { text-align: center; }
+        body { margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f9fafb; font-family: sans-serif; color: #374151; padding: 20px;}
+        .loader { border: 4px solid #e5e7eb; border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .text-center { text-align: center; max-width: 600px; word-wrap: break-word; }
     </style>
 </head>
 <body>
@@ -39,15 +19,11 @@
     </div>
 
     <script>
-        // Your Supabase Credentials
         const SUPABASE_URL = "https://afollbwkvfzhnvpbbnss.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmb2xsYndrdmZ6aG52cGJibnNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NDgyMzgsImV4cCI6MjEwMDMyNDIzOH0.FVuliZh-KITh7yN8Q42rUEhwb_El4t9XgOGclVNRCaQ";
-        
-        // The component name you typed into the database row
         const COMPONENT_NAME = "main_app";
 
         async function loadHiddenApp() {
-            // Using your new table: hidden_dz
             const url = `${SUPABASE_URL}/rest/v1/hidden_dz?component_name=eq.${COMPONENT_NAME}&select=html_string`;
 
             try {
@@ -61,36 +37,31 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error("Failed to connect to database");
+                    // This will catch Supabase-specific errors (like wrong column names)
+                    const errorText = await response.text();
+                    throw new Error(`Supabase Error ${response.status}: ${errorText}`);
                 }
 
                 const data = await response.json();
 
                 if (data && data.length > 0) {
                     const secretHTML = data[0].html_string;
-                    
-                    // This completely deletes the loading screen and injects your entire hidden app,
-                    // allowing all your hidden scripts, styles, and HTML to run exactly as normal.
                     document.open();
                     document.write(secretHTML);
                     document.close();
                 } else {
-                    document.getElementById('status-text').innerText = "Error: Application code not found in database.";
-                    document.getElementById('status-text').style.color = "red";
-                    document.querySelector('.loader').style.display = "none";
+                    throw new Error("Connected successfully, but no row was found where component_name = 'main_app'. Check your spelling in the database!");
                 }
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('status-text').innerText = "System Error: Could not load application.";
+                document.getElementById('status-text').innerHTML = `<b>Error:</b> <br><br> ${error.message}`;
                 document.getElementById('status-text').style.color = "red";
                 document.querySelector('.loader').style.display = "none";
             }
         }
 
-        // Run the function as soon as the loader page opens
         loadHiddenApp();
     </script>
-
 </body>
 </html>
